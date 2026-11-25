@@ -12,17 +12,19 @@ class GesturLabApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GesturLab',
+      title: 'GesturLab - Praktikum GestureDetector',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF1B365D),
+          brightness: Brightness.light,
         ),
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF1B365D),
           foregroundColor: Colors.white,
           centerTitle: true,
+          elevation: 2,
         ),
       ),
       home: const HomeScreen(),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ScaleSwipeScreen extends StatefulWidget {
@@ -19,7 +18,7 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
     {
       'title': 'Eksplorasi Pegunungan',
       'tag': 'KARTU 1 / 3',
-      'desc': 'Gunakan dua jari untuk memperbesar atau memutar kartu ini.',
+      'desc': 'Gunakan dua jari (pinch) untuk memperbesar atau memutar kartu ini.',
       'icon': Icons.terrain,
       'color': Color(0xFF0F766E),
     },
@@ -33,7 +32,7 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
     {
       'title': 'Observasi Antariksa',
       'tag': 'KARTU 3 / 3',
-      'desc': 'Tekan tombol Reset untuk mengembalikan skala ke 1.0x.',
+      'desc': 'Tekan tombol Reset Transformasi untuk mengembalikan skala ke 1.0x.',
       'icon': Icons.auto_awesome,
       'color': Color(0xFF6D28D9),
     },
@@ -57,9 +56,7 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
 
   void _prevCard() {
     setState(() {
-      _currentIndex =
-          (_currentIndex - 1 + _galleryItems.length) %
-              _galleryItems.length;
+      _currentIndex = (_currentIndex - 1 + _galleryItems.length) % _galleryItems.length;
       _resetTransform();
     });
   }
@@ -83,14 +80,12 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // Indikator Skala & Rotasi Real-Time
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 10,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
                 color: const Color(0xFFF1F5F9),
                 borderRadius: BorderRadius.circular(12),
@@ -113,7 +108,7 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
                 ],
               ),
             ),
-
+            // Area Interaksi Scale & Rotate (Pinch-to-Zoom)
             Expanded(
               child: Center(
                 child: GestureDetector(
@@ -123,10 +118,8 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
                   },
                   onScaleUpdate: (details) {
                     setState(() {
-                      _currentScale =
-                          (_baseScale * details.scale).clamp(0.6, 2.2);
-                      _currentRotation =
-                          _baseRotation + details.rotation;
+                      _currentScale = (_baseScale * details.scale).clamp(0.6, 2.2);
+                      _currentRotation = _baseRotation + details.rotation;
                     });
                   },
                   child: Transform.rotate(
@@ -153,9 +146,7 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
+                                  horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
                                 color: Colors.white24,
                                 borderRadius: BorderRadius.circular(12),
@@ -203,11 +194,10 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
                 ),
               ),
             ),
-
+            // Area Kontrol Swipe Horizontal untuk Navigasi Kartu
             GestureDetector(
               onHorizontalDragEnd: (details) {
                 if (details.primaryVelocity == null) return;
-
                 if (details.primaryVelocity! < -200) {
                   _nextCard();
                 } else if (details.primaryVelocity! > 200) {
@@ -216,47 +206,35 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
               },
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 14,
-                  horizontal: 16,
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                 decoration: BoxDecoration(
                   color: const Color(0xFFEFF6FF),
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: const Color(0xFFBFDBFE),
-                  ),
+                  border: Border.all(color: const Color(0xFFBFDBFE)),
                 ),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        _galleryItems.length,
-                        (idx) {
-                          final isActive = idx == _currentIndex;
-
-                          return AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                            ),
-                            width: isActive ? 22 : 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              color: isActive
-                                  ? const Color(0xFF1B365D)
-                                  : const Color(0xFF94A3B8),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          );
-                        },
-                      ),
+                      children: List.generate(_galleryItems.length, (idx) {
+                        final isActive = idx == _currentIndex;
+                        return AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: isActive ? 22 : 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: isActive
+                                ? const Color(0xFF1B365D)
+                                : const Color(0xFF94A3B8),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        );
+                      }),
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      '← Usap Kiri atau Kanan untuk Ganti Kartu →',
-                      textAlign: TextAlign.center,
+                      '← Usap (Swipe) Kiri atau Kanan di Area Ini untuk Ganti Kartu →',
                       style: TextStyle(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w600,
@@ -273,3 +251,4 @@ class _ScaleSwipeScreenState extends State<ScaleSwipeScreen> {
     );
   }
 }
+

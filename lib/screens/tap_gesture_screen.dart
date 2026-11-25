@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'drag_canvas_screen.dart';
 
@@ -14,7 +13,6 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
   bool _isLiked = false;
   int _colorIndex = 0;
   String _lastGesture = 'Belum ada sentuhan';
-
   final List<String> _logs = [];
 
   final List<Color> _cardColors = const [
@@ -27,16 +25,13 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
 
   void _addLog(String eventName) {
     final now = DateTime.now();
-
     final timeStr =
         '${now.hour.toString().padLeft(2, '0')}:'
         '${now.minute.toString().padLeft(2, '0')}:'
         '${now.second.toString().padLeft(2, '0')}';
-
     setState(() {
       _lastGesture = eventName;
       _logs.insert(0, '[$timeStr] $eventName');
-
       if (_logs.length > 8) {
         _logs.removeLast();
       }
@@ -48,7 +43,6 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
       _tapCount++;
       _colorIndex = (_colorIndex + 1) % _cardColors.length;
     });
-
     _addLog('onTap → Warna diubah (Total Tap: $_tapCount)');
   }
 
@@ -56,12 +50,9 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
     setState(() {
       _isLiked = !_isLiked;
     });
-
-    _addLog(
-      _isLiked
-          ? 'onDoubleTap → Ditandai Favorit (Liked)'
-          : 'onDoubleTap → Batal Favorit (Unliked)',
-    );
+    _addLog(_isLiked
+        ? 'onDoubleTap → Ditandai Favorit (Liked)'
+        : 'onDoubleTap → Batal Favorit (Unliked)');
   }
 
   void _handleLongPress() {
@@ -70,14 +61,10 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
       _colorIndex = 0;
       _isLiked = false;
     });
-
     _addLog('onLongPress → Status di-reset ke awal');
-
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text(
-          'Long Press terdeteksi: Counter & warna di-reset!',
-        ),
+        content: Text('Long Press terdeteksi: Counter & warna di-reset!'),
         duration: Duration(seconds: 2),
       ),
     );
@@ -92,23 +79,22 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
         title: const Text('Screen 2: Tap & Long Press'),
         actions: [
           IconButton(
-            tooltip: 'Ke Screen 3',
+            tooltip: 'Ke Screen 3 (Drag Canvas)',
             icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const DragCanvasScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const DragCanvasScreen()),
               );
             },
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // Area Target GestureDetector Utama
             GestureDetector(
               onTap: _handleSingleTap,
               onDoubleTap: _handleDoubleTap,
@@ -136,9 +122,7 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
                       duration: const Duration(milliseconds: 200),
                       child: Icon(
                         _isLiked ? Icons.favorite : Icons.touch_app,
-                        color: _isLiked
-                            ? Colors.redAccent.shade100
-                            : Colors.white,
+                        color: _isLiked ? Colors.redAccent.shade100 : Colors.white,
                         size: 58,
                       ),
                     ),
@@ -154,28 +138,18 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
                     const SizedBox(height: 6),
                     Text(
                       'Status: $_lastGesture',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.white70,
-                      ),
+                      style: const TextStyle(fontSize: 13, color: Colors.white70),
                     ),
                     const SizedBox(height: 12),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.black26,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Text(
                         'Tap: Ganti Warna | Double Tap: Like | Long Press: Reset',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 11.5,
-                          color: Colors.white,
-                        ),
+                        style: TextStyle(fontSize: 11.5, color: Colors.white),
                       ),
                     ),
                   ],
@@ -183,28 +157,23 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
               ),
             ),
             const SizedBox(height: 18),
+            // Header Log Aktivitas
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   'Log Callback Real-Time:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 TextButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      _logs.clear();
-                    });
-                  },
+                  onPressed: () => setState(() => _logs.clear()),
                   icon: const Icon(Icons.delete_outline, size: 18),
                   label: const Text('Bersihkan'),
                 ),
               ],
             ),
             const SizedBox(height: 6),
+            // Daftar Riwayat Event
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -212,25 +181,19 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
                 decoration: BoxDecoration(
                   color: const Color(0xFFF8FAFC),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: const Color(0xFFCBD5E1),
-                  ),
+                  border: Border.all(color: const Color(0xFFCBD5E1)),
                 ),
                 child: _logs.isEmpty
                     ? const Center(
                         child: Text(
                           'Sentuh kotak di atas untuk melihat urutan eksekusi callback...',
+                          style: TextStyle(color: Color(0xFF64748B), fontSize: 13),
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF64748B),
-                            fontSize: 13,
-                          ),
                         ),
                       )
                     : ListView.separated(
                         itemCount: _logs.length,
-                        separatorBuilder: (_, __) =>
-                            const Divider(height: 10),
+                        separatorBuilder: (_, __) => const Divider(height: 10),
                         itemBuilder: (context, index) {
                           return Text(
                             _logs[index],
@@ -250,3 +213,4 @@ class _TapGestureScreenState extends State<TapGestureScreen> {
     );
   }
 }
+
